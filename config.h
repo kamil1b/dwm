@@ -1,26 +1,16 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 1;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;     /* 0 means no systray */
+static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Hack Nerd Font Mono:style=Regular:pixelsize=12:antialias=true:autohint=true" };
 static const char dmenufont[]       = "Hack Nerd Font Mono:style=Regular:pixelsize=12:antialias=true:autohint=true";
-/* static const char col_gray1[]       = "#222222"; */
-/* static const char col_gray2[]       = "#444444"; */
-/* static const char col_gray3[]       = "#bbbbbb"; */
-/* static const char col_gray4[]       = "#eeeeee"; */
-/* static const char col_cyan[]        = "#005577"; */
-/* static const char *colors[][3]      = { */
-/* 	/1*               fg         bg         border   *1/ */
-/* 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 }, */
-/* 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  }, */
-/* }; */
 
 static const char base03[]  =  "#002b36";
 static const char base02[]  =  "#073642";
@@ -38,7 +28,7 @@ static const char fiolet[]  =  "#6c71c4";
 static const char blue[]    =  "#268bd2";
 static const char cyan[]    =  "#2aa198";
 static const char green[]   =  "#859900";
-static const char *colors[][3]      = {
+static const char *colors[][3] = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { base0, base03, blue },
 	[SchemeSel]  = { base2, green, blue },
@@ -55,14 +45,15 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-    { "Vivaldi",  NULL,       NULL,       2,            0,           -1 },
-
+	{ "Vivaldi",  NULL,       NULL,       2,            0,           -1 },
+	{ "Firefox",  NULL,       NULL,       2,            0,           -1 },
+	{ "Spotify",  NULL,       NULL,       7,            0,           -1 },
 };
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -86,7 +77,9 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", base03, "-nf", base0, "-sb", green, "-sf", base00, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", base03, "-nf", base0, "-sb", green, "-sf", base2, NULL };
+static const char *passmenucmd[] = {"passmenu", "--type", "-m", dmenumon, "-fn", dmenufont, "-nb", base03, "-nf", base0, "-sb", green, "-sf", base2, NULL };
+static const char *slockcmd[] = {"slock", NULL};
 static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {
@@ -126,7 +119,9 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
+	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = passmenucmd } },
+	{ Mod4Mask,                     XK_l,      spawn,          {.v = slockcmd } },
 };
 
 /* button definitions */
